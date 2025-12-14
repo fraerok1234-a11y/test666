@@ -11,7 +11,7 @@ export default function ContactSection() {
 					<div className="space-y-8">
 						<div>
 							<h2 className="text-4xl font-bold mb-4">
-								Зв'яжіться з Нами
+								Зв&apos;яжіться з Нами
 							</h2>
 							<p className="text-xl text-gray-300">
 								Готові відповісти на всі ваші питання та допомогти з вибором
@@ -49,7 +49,7 @@ export default function ContactSection() {
 									<h3 className="text-lg font-semibold mb-1">Адреса</h3>
 									<p className="text-gray-300">
 										м. Київ, вул. Хрещатик, 1<br />
-										Бізнес-центр "Україна"
+										Бізнес-центр &quot;Україна&quot;
 									</p>
 								</div>
 							</div>
@@ -76,12 +76,12 @@ export default function ContactSection() {
 							<div className="grid md:grid-cols-2 gap-4">
 								<div>
 									<label className="block text-sm font-medium mb-2">
-										Ім'я *
+										Ім&apos;я *
 									</label>
 									<input
 										type="text"
 										className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-white"
-										placeholder="Ваше ім'я"
+										placeholder="Ваше ім&apos;я"
 										required
 									/>
 								</div>
