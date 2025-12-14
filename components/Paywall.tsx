@@ -21,7 +21,7 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 
 	const setupListeners = useCallback(() => {
 		purchaseService.setupPurchaseListeners(
-			(_purchase) => {
+			() => {
 				setIsPurchasing(false);
 				Alert.alert('Успіх!', 'Покупку завершено успішно!', [
 					{ text: 'OK', onPress: onPurchaseComplete },
