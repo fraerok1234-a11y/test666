@@ -61,7 +61,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ result, testType, questions =
 			</View>
 
 			<View style={styles.feedbackContainer}>
-				<Text style={styles.feedbackLabel}>Зворотний зв'язок:</Text>
+				<Text style={styles.feedbackLabel}>Зворотний зв&apos;язок:</Text>
 				<Text style={styles.feedbackText}>{result.feedback}</Text>
 			</View>
 

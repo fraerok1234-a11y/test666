@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
 	View,
 	Text,
@@ -26,7 +26,7 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 		return () => {
 			purchaseService.cleanup();
 		};
-	}, []);
+	}, [setupListeners]);
 
 	const loadProduct = async () => {
 		try {
@@ -41,22 +41,22 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 		}
 	};
 
-	const setupListeners = () => {
+	const setupListeners = useCallback(() => {
 		purchaseService.setupPurchaseListeners(
-			(purchase) => {
+			() => {
 				setIsPurchasing(false);
 				Alert.alert('Успіх!', 'Покупку завершено успішно!', [
 					{ text: 'OK', onPress: onPurchaseComplete },
 				]);
 			},
-			(error) => {
+			(error: { code?: string }) => {
 				setIsPurchasing(false);
 				if (error.code !== 'E_USER_CANCELLED') {
 					Alert.alert('Помилка', 'Не вдалося завершити покупку');
 				}
 			}
 		);
-	};
+	}, [onPurchaseComplete]);
 
 	const handlePurchase = async () => {
 		if (isPurchasing) return;
@@ -64,9 +64,10 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 		setIsPurchasing(true);
 		try {
 			await purchaseService.purchase();
-		} catch (error: any) {
+		} catch (error: unknown) {
 			setIsPurchasing(false);
-			Alert.alert('Помилка', error.message || 'Не вдалося виконати покупку');
+			const errorMessage = error instanceof Error ? error.message : 'Не вдалося виконати покупку';
+			Alert.alert('Помилка', errorMessage);
 		}
 	};
 
