@@ -1,0 +1,24 @@
+{
+	"name": "Тестовое Приложение",
+	"short_name": "Тесты",
+	"description": "Интерактивное приложение с викторинами и тестами",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#f8f9fa",
+	"theme_color": "#3498db",
+	"orientation": "portrait",
+	"icons": [
+		{
+			"src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAyNCIgaGVpZ2h0PSIxMDI0IiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAyNCIgaGVpZ2h0PSIxMDI0IiByeD0iMjAwIiBmaWxsPSIjMzQ5OGRiIi8+CjxwYXRoIGQ9Ik01MTIgMjU2QzM3Ni42IDI1NiAyNTYgMzc2LjYgMjU2IDUxMlMzNzYuNiA3NjggNTEyIDc2OFM3NjggNjQ3LjQgNzY4IDUxMlM2NDcuNCAyNTYgNTEyIDI1NlpNNTEyIDY0MEM0NDYuNyA2NDAgMzk2IDU4OS4zIDM5NiA1MjRTNDQ2LjcgNDA4IDUxMiA0MDhTNjI4IDQ1OC43IDYyOCA1MjRTNTc3LjMgNjQwIDUxMiA2NDBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNDgwIDQ4MEg1NDRWNTQ4SDQ4MFY0ODBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNTQ0IDQ4MEg2MDhWNTQ4SDU0NFY0ODBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNNDE2IDQ4MEg0ODBWNTQ4SDQxNlY0ODBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K",
+			"sizes": "1024x1024",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	],
+	"categories": [
+		"education",
+		"entertainment"
+	],
+	"lang": "ru",
+	"dir": "ltr"
+}

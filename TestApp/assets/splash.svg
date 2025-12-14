@@ -1,0 +1,20 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="#f8f9fa"/>
+  
+  <!-- Logo -->
+  <circle cx="512" cy="400" r="120" fill="#3498db"/>
+  <path d="M512 320C446.7 320 392 374.7 392 440S446.7 560 512 560S632 505.3 632 440S577.3 320 512 320ZM512 520C458.7 520 416 477.3 416 424S458.7 328 512 328S608 370.7 608 424S565.3 520 512 520Z" fill="white"/>
+  
+  <!-- Question marks -->
+  <text x="480" y="480" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white">?</text>
+  <text x="600" y="480" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white">?</text>
+  <text x="360" y="480" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white">?</text>
+  
+  <!-- App name -->
+  <text x="512" y="700" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#2c3e50" text-anchor="middle">Тестовое Приложение</text>
+  
+  <!-- Subtitle -->
+  <text x="512" y="780" font-family="Arial, sans-serif" font-size="36" fill="#7f8c8d" text-anchor="middle">Викторины и тесты</text>
+</svg>
+
