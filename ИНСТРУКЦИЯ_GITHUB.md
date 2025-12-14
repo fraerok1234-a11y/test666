@@ -154,3 +154,4 @@ git checkout -b feature/new-feature
 3. **Большой файл**: GitHub ограничивает до 100MB на файл
 
 
+
