@@ -19,6 +19,23 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isPurchasing, setIsPurchasing] = useState(false);
 
+	const setupListeners = useCallback(() => {
+		purchaseService.setupPurchaseListeners(
+			(_purchase) => {
+				setIsPurchasing(false);
+				Alert.alert('Успіх!', 'Покупку завершено успішно!', [
+					{ text: 'OK', onPress: onPurchaseComplete },
+				]);
+			},
+			(error: { code?: string }) => {
+				setIsPurchasing(false);
+				if (error.code !== 'E_USER_CANCELLED') {
+					Alert.alert('Помилка', 'Не вдалося завершити покупку');
+				}
+			}
+		);
+	}, [onPurchaseComplete]);
+
 	useEffect(() => {
 		loadProduct();
 		setupListeners();
@@ -41,32 +58,15 @@ const Paywall: React.FC<PaywallProps> = ({ onPurchaseComplete }) => {
 		}
 	};
 
-	const setupListeners = useCallback(() => {
-		purchaseService.setupPurchaseListeners(
-			() => {
-				setIsPurchasing(false);
-				Alert.alert('Успіх!', 'Покупку завершено успішно!', [
-					{ text: 'OK', onPress: onPurchaseComplete },
-				]);
-			},
-			(error: { code?: string }) => {
-				setIsPurchasing(false);
-				if (error.code !== 'E_USER_CANCELLED') {
-					Alert.alert('Помилка', 'Не вдалося завершити покупку');
-				}
-			}
-		);
-	}, [onPurchaseComplete]);
-
 	const handlePurchase = async () => {
 		if (isPurchasing) return;
 
 		setIsPurchasing(true);
 		try {
 			await purchaseService.purchase();
-		} catch (error: unknown) {
+		} catch (err: unknown) {
 			setIsPurchasing(false);
-			const errorMessage = error instanceof Error ? error.message : 'Не вдалося виконати покупку';
+			const errorMessage = err instanceof Error ? err.message : 'Не вдалося виконати покупку';
 			Alert.alert('Помилка', errorMessage);
 		}
 	};
