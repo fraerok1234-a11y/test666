@@ -14,16 +14,68 @@ import Paywall from './components/Paywall';
 import TestCard from './components/TestCard';
 import ResultsCard from './components/ResultsCard';
 import { purchaseService } from './services/purchaseService';
-import { TEST_CONFIG, TEST_TYPES } from './constants/tests';
+// Загружаем конфигурацию с обработкой ошибок
+let TEST_CONFIG: any;
+let TEST_TYPES: any;
+
+try {
+	const testsModule = require('./constants/tests');
+	TEST_CONFIG = testsModule.TEST_CONFIG;
+	TEST_TYPES = testsModule.TEST_TYPES;
+	console.log('✅ Tests module loaded successfully');
+} catch (error) {
+	console.error('❌ Error loading tests module:', error);
+	// Временная заглушка
+	TEST_CONFIG = {
+		quiz: {
+			title: '📚 Вікторина',
+			subtitle: 'Перевірте свої знання',
+			color: '#3498db',
+			questions: []
+		}
+	};
+	TEST_TYPES = { QUIZ: 'quiz' };
+}
 import {
 	calculateQuizScore,
 } from './utils/testUtils';
-import type { Question, TestResult } from './constants/tests';
+// type Question = any;
+// type TestResult = any;
+type Question = {
+	id: number;
+	question: string;
+	options: string[];
+	correctAnswer?: number;
+	category?: string;
+};
+type TestResult = {
+	score: number;
+	total: number;
+	percentage: number;
+	feedback: string;
+};
 
 const IS_WEB = Platform.OS === 'web';
 
 const App: React.FC = () => {
-	const [isPurchased, setIsPurchased] = useState<boolean>(IS_WEB); // Для веб сразу разрешаем доступ
+	// Отладка загрузки
+	console.log('🚀 App component starting...');
+	console.log('IS_WEB:', IS_WEB);
+	
+	try {
+		console.log('✅ TEST_CONFIG loaded:', TEST_CONFIG ? 'yes' : 'no');
+		console.log('✅ TEST_TYPES loaded:', TEST_TYPES ? 'yes' : 'no');
+		if (TEST_CONFIG && TEST_TYPES) {
+			const quizConfig = TEST_CONFIG[TEST_TYPES.QUIZ];
+			console.log('✅ Quiz config:', quizConfig ? 'yes' : 'no');
+			console.log('✅ Questions count:', quizConfig?.questions?.length || 0);
+		}
+	} catch (error) {
+		console.error('❌ Error accessing TEST_CONFIG:', error);
+		console.error('Error details:', error);
+	}
+	
+	const [isPurchased, setIsPurchased] = useState<boolean>(IS_WEB);
 	const [isCheckingPurchase, setIsCheckingPurchase] = useState<boolean>(!IS_WEB);
 	const [currentTest, setCurrentTest] = useState<string>('');
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -51,7 +103,6 @@ const App: React.FC = () => {
 			setIsPurchased(purchased);
 		} catch (error) {
 			console.error('Error checking purchase:', error);
-			// В случае ошибки разрешаем доступ (для тестирования)
 			setIsPurchased(true);
 		} finally {
 			setIsCheckingPurchase(false);
@@ -62,7 +113,6 @@ const App: React.FC = () => {
 		setIsPurchased(true);
 	};
 
-	// Получаем все уникальные категории
 	const getAvailableCategories = (): string[] => {
 		const allQuestions = TEST_CONFIG[TEST_TYPES.QUIZ].questions;
 		const categories = new Set<string>();
@@ -92,7 +142,6 @@ const App: React.FC = () => {
 
 		const questions = getCurrentQuestions();
 		
-		// Задержка перед переходом к следующему вопросу, чтобы показать правильный ответ
 		setTimeout(() => {
 			if (currentQuestion < questions.length - 1) {
 				setCurrentQuestion(currentQuestion + 1);
@@ -101,20 +150,18 @@ const App: React.FC = () => {
 			} else {
 				calculateResults(newAnswers);
 			}
-		}, 2000); // 2 секунды задержки
+		}, 2000);
 	};
 
 	const calculateResults = (finalAnswers: number[]) => {
 		const questions = getCurrentQuestions();
-		// Используем только викторину
 		const result = calculateQuizScore(questions, finalAnswers);
-
 		setTestResults(result);
 		setShowResults(true);
 	};
 
 	const startTest = (testType: string, category?: string) => {
-		setCurrentTest(TEST_TYPES.QUIZ); // Всегда викторина
+		setCurrentTest(TEST_TYPES.QUIZ);
 		setSelectedCategory(category || null);
 		setCurrentQuestion(0);
 		setAnswers([]);
@@ -135,25 +182,31 @@ const App: React.FC = () => {
 		setShowCorrectAnswer(false);
 	};
 
-	const renderMainMenu = () => (
+	const renderMainMenu = () => {
+		const quizConfig = TEST_CONFIG[TEST_TYPES.QUIZ];
+		const questionsCount = quizConfig.questions.length;
+
+		return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Тестове Додаток</Text>
 			<Text style={styles.subtitle}>Перевірте свої знання</Text>
+				<Text style={styles.subtitle}>Доступно питань: {questionsCount}</Text>
 
 			<TestCard
-				title={TEST_CONFIG[TEST_TYPES.QUIZ].title}
-				subtitle={TEST_CONFIG[TEST_TYPES.QUIZ].subtitle}
+					title={quizConfig.title}
+					subtitle={quizConfig.subtitle}
 				icon="📚"
-				color={TEST_CONFIG[TEST_TYPES.QUIZ].color}
+					color={quizConfig.color}
 				onPress={() => setCurrentTest('category-selection')}
 			/>
 		</View>
 	);
+	};
 
 	const renderCategorySelection = () => {
 		const categories = getAvailableCategories();
 		const allQuestions = TEST_CONFIG[TEST_TYPES.QUIZ].questions;
-		
+  
 		return (
 			<View style={styles.container}>
 				<Text style={styles.title}>Оберіть тему</Text>
@@ -230,7 +283,6 @@ const App: React.FC = () => {
 						const isWrong = isSelected && !isCorrect;
 						const showAnswer = showCorrectAnswer;
 						
-						// Определяем стили для кнопки
 						const buttonStyles = [styles.optionButton];
 						const textStyles = [styles.optionText];
 						
@@ -271,9 +323,6 @@ const App: React.FC = () => {
 	const renderResults = () => {
 		if (!testResults) return null;
 		const questions = getCurrentQuestions();
-		
-		// Отладка
-		console.log('renderResults - questions count:', questions.length, 'answers count:', answers.length);
 
 		return (
 			<View style={styles.container}>
@@ -532,3 +581,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
